@@ -6,16 +6,12 @@
 int parseDecimalChar(char c)
 {
     (void)c;
-    int count = c;
-    count = -1;
+    int count = -1;
+    
+    while (count != c){
+			count++;
+	}
 
-    if ( (count != c) ) {
-        count++;
-    }
-
-    else {
-        return -1;
-    }
 
     return count;
 }
