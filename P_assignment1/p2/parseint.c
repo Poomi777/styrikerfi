@@ -8,12 +8,11 @@ int parseDecimalChar(char c)
     (void)c;
     int count = 0;
 
-	while (c != '\0'){
+	while (c != '\5'){
 		if ( (count != c) ) {
 			count++;
 
 		}
-		c++;
 	}
 
 
