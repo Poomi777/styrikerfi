@@ -7,7 +7,7 @@ int parseDecimalChar(char c)
 {
     int count = 0;
 
-	while (c != '\5'){
+	while (c != '5'){
 		if ( (count != c) ) {
 			count++;
 
