@@ -13,6 +13,7 @@ int parseDecimalChar(char c)
 			count++;
 
 		}
+		c++;
 	}
 
 
