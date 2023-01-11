@@ -9,12 +9,17 @@ int parseDecimalChar(char c)
     int count = c;
     count = 0;
 
-    if ( (count != c) ){
+    if ( (count == c) ) {
+        return count;
+    }
+
+    if ( (count != c) ) {
         count++;
     }
 
-
-
+    else {
+        return -1;
+    }
     return count;
 }
 
