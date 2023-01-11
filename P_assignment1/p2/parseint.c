@@ -6,15 +6,17 @@
 int parseDecimalChar(char c)
 {
     (void)c;
+    int checkc = c;
     int count = -1;
-    
-    while (count != c){
+
+    while (count != checkc){
 			count++;
 	}
 
 
     return count;
 }
+
 
 /*
  * Parses a non-negative integer, interpreted as octal when starting with 0,
