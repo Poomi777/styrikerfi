@@ -6,8 +6,9 @@
 int parseDecimalChar(char c)
 {
     (void)c;
+    int d = c;
 
-    return -1;
+    return d;
 }
 
 /*
