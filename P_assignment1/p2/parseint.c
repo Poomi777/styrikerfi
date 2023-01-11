@@ -6,14 +6,14 @@
 int parseDecimalChar(char c)
 {
     int count = 0;
-	while (count != "%d", (int)(c)){
+    int converter = (int)(c);
+	while (count != converter){
 			count++;
 	}
 
 
     return count;
 }
-
 
 /*
  * Parses a non-negative integer, interpreted as octal when starting with 0,
