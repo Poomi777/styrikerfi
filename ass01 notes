@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+int32_t i;
+
+for (i=1; <= times; i++) {
+    printf("%d Hello World!\n", i)
+}
+
+
+
+
+
+
+int a = 5
+int *p = &a;
+
+int b = *p;
+
+
+
+------------
+
+int *ip;
+void *vp;
+
+int a = ip[3];
+int a = *(ip + 3);
+
+int a = (int*)
+
+
+
