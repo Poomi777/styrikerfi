@@ -5,11 +5,12 @@
  */
 int parseDecimalChar(char c)
 {
+    if ( ((c - '0') < 0) ){
+        return -1;
+    }
 
-
-    return c - '0';
+    return '0' - c;
 }
-
 /*
  * Parses a non-negative integer, interpreted as octal when starting with 0,
  * decimal otherwise. Returns -1 on error.
