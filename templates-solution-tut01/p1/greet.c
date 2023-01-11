@@ -1,4 +1,5 @@
 #include "greet.h"
+#include <stdio.h>
 
 void greet(int32_t times) {
 	
