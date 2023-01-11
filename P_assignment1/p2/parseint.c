@@ -5,10 +5,14 @@
  */
 int parseDecimalChar(char c)
 {
-    int count = -1;
+    (void)c;
+    int count = 0;
 
-    while (count != c){
+	while (c != '\0'){
+		if ( (count != c) ) {
 			count++;
+
+		}
 	}
 
 
