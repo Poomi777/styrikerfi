@@ -6,12 +6,8 @@
 int parseDecimalChar(char c)
 {
     int count = 0;
-
-	while (c != '5'){
-		if ( (count != c) ) {
+	while (count != "%d", (int)(c)){
 			count++;
-
-		}
 	}
 
 
