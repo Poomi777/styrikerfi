@@ -5,7 +5,7 @@ int main()
 {
     test_start("parseint.c");
 
-    test_equals_int(parseDecimalChar('a'), -1);
+    test_equals_int(parseDecimalChar('5'), 5);
     test_equals_int(parseInt("010"), 8);
     test_equals_int(parseInt("10"), 10);
     test_equals_int(parseInt("?"), -1);
