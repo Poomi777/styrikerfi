@@ -5,7 +5,6 @@
  */
 int parseDecimalChar(char c)
 {
-    (void)c;
     int count = 0;
 
 	while (c != '\5'){
