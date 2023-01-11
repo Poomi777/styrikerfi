@@ -9,7 +9,7 @@ void print_line(int64_t number, char *string)
     int64_t i;
 
     for (i=1; i <= number; i++) {
-        printf("%d %d\n", i, *string);
+        printf("%d Hello world!\n", i);
     }
     number++;
 
