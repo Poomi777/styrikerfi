@@ -6,11 +6,11 @@ int countchr(char *string, char c) {
 	int count = 0;
 
 	while (*string != '\0'){
-		if (string = c) {
+		if (*string = c) {
 			count++;
 
 		};
-		string++;
+		*string++;
 	}
 
 	return count;
