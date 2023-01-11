@@ -9,6 +9,7 @@ int countchr(char *string, char c) {
 			count++;
 
 		};
+		string++
 	}
 
 	return count;
