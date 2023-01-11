@@ -5,14 +5,9 @@
  */
 int parseDecimalChar(char c)
 {
-    int count = 0;
-    int converter = (int)(c);
-	while (count != converter){
-			count++;
-	}
 
 
-    return count;
+    return c - '0';
 }
 
 /*
