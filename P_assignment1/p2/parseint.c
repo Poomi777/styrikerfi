@@ -27,11 +27,7 @@ int parseInt(char *string)
     int dec_converter = 0;
     
     if ( (*string != '0') ){
-        for (i=1; i <= 4; i++){
-            dec_converter = dec_converter + (int)*string;
-            string++;
-        }
-        return dec_converter - '0';
+        return (int)*string - '0';
     }
 
     else if ( (*string == '0') ){
