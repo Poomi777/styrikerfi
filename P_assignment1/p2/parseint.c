@@ -24,11 +24,9 @@ int parseInt(char *string)
     (void)string;
     int i;
 
-    for (i=1; i <= 4; i++) {
-    	if ( (*string == '\0') ){
+    if ( (*string == '\0') ){
             return 99;
         }
-	}
 
     return -1;
 }
