@@ -13,7 +13,7 @@ int parseDecimalChar(char c)
         return -1;
     }
 
-    return c + '0';
+    return c - '0';
 }
 /*
  * Parses a non-negative integer, interpreted as octal when starting with 0,
@@ -34,7 +34,7 @@ int parseInt(char *string)
             return -1;
         }
 
-        return *string - '0';
+        return *string + '0';
     }
 
     else if ( (*string == '0') ){
