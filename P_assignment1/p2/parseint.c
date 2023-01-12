@@ -24,8 +24,7 @@ int parseInt(char *string)
     (void)string;
     int i;
     int converter = 0;
-    int dec_converter = 0;
-    
+
     if ( (*string != '0') ){
         return (int)*string - '0';
     }
