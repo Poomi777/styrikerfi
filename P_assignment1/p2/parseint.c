@@ -26,13 +26,15 @@ int parseInt(char *string)
     int converter = 0;
     
     if ( (*string != '0') ){
-        for (i=1; i <= 4; i++){
-            if ( ((int)*string < 57) ){
-                converter = (char)converter + (char)*string;
-            }
-            string++;
+        if ( (*string > 57) ){
+        return -1;
         }
-        return converter - '0';
+
+        if ( (*string < 48) ){
+            return -1;
+        }
+
+        return *string - '0';
     }
 
     else if ( (*string == '0') ){
@@ -46,5 +48,5 @@ int parseInt(char *string)
     }
     return converter;
 
-return -1;
+    return -1;
 }
