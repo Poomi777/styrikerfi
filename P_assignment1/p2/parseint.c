@@ -24,10 +24,14 @@ int parseInt(char *string)
     (void)string;
     int i;
     int converter = 0;
+    int dec_converter = 0;
     
     if ( (*string != '0') ){
-        *string = string;
-        return *string;
+        for (i=1; i <= 4; i++){
+            dec_converter = dec_converter + (int)*string;
+            string++;
+        }
+        return dec_converter - '0';
     }
 
     else if ( (*string == '0') ){
@@ -38,8 +42,9 @@ int parseInt(char *string)
                 converter = converter + 8;
             }
         }
-        return converter;
     }
+    return converter;
 
     return -1;
 }
+
