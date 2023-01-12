@@ -25,16 +25,16 @@ int parseInt(char *string)
     int i;
     int converter = 0;
 
-    for (i=1; i <= 4; i++) {
-    	if ( (*string == '0') ){
+    if ( (*string == '0') ){
+        for (i=1; i <= 3; i++) {
             string++;
 
             if ( (*string == '1') ){
                 converter = converter + 8;
             }
         }
-        return converter;
-	}
+    }
+    return converter;
 
     return -1;
 }
