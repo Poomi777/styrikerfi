@@ -24,9 +24,14 @@ int parseInt(char *string)
     (void)string;
     int i;
     int converter = 0;
-
+    
     if ( (*string != '0') ){
-        return string;
+        for (i=1; i <= 4; i++){
+            if ( ((int)*string < 57) ){
+                converter = (char)converter + (char)*string;
+            }
+            string++;
+        }
     }
 
     else if ( (*string == '0') ){
@@ -40,6 +45,6 @@ int parseInt(char *string)
     }
     return converter;
 
-    return -1;
+return -1;
 }
 
