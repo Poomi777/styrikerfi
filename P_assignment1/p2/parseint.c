@@ -29,5 +29,5 @@ int parseInt(char *string)
         return 99;
     }
 
-    return -1;
+    return -2;
 }
