@@ -23,7 +23,7 @@ int parseInt(char *string)
 {
     (void)string;
 
-    if ( (*string == '\0') ){
+    if ( (*string == '0') ){
             return 99;
         }
 
