@@ -22,12 +22,12 @@ int parseDecimalChar(char c)
 int parseInt(char *string)
 {
     (void)string;
+    char first_letter = string[0];
 
-    
 
-    if ( (*string == 0) ){
+    if ( (first_letter == 0) ){
         return 99;
     }
 
-    return -2;
+    return -1;
 }
