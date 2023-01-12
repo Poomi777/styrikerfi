@@ -22,11 +22,19 @@ int parseDecimalChar(char c)
 int parseInt(char *string)
 {
     (void)string;
+    int i;
+    int converter = 0;
 
-    if ( (*string == '0') ){
-            return 99;
+    for (i=1; i <= 4; i++) {
+    	if ( (*string == '0') ){
+            *string++;
+
+            if ( (*string == '1') ){
+                converter + (int)*string;
+            }
         }
+        return converter;
+	}
 
     return -1;
 }
-
