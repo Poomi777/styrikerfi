@@ -27,8 +27,7 @@ int parseInt(char *string)
     
     if ( (*string != '0') ){
         for (i=1; i <= 4; i++){
-            return *string;
-            string++;
+            return string;
         }
     }
 
