@@ -22,7 +22,6 @@ int parseDecimalChar(char c)
 int parseInt(char *string)
 {
     (void)string;
-    int i;
 
     if ( (*string == '\0') ){
             return 99;
