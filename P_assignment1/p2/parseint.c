@@ -30,7 +30,7 @@ int parseInt(char *string)
             string++;
 
             if ( (*string == '1') ){
-                converter + (int)*string;
+                converter = converter + (int)*string;
             }
         }
         return converter;
