@@ -26,7 +26,7 @@ int parseInt(char *string)
     int converter = 0;
 
     if ( (*string != '0') ){
-        return (int)*string - '0';
+        return string;
     }
 
     else if ( (*string == '0') ){
