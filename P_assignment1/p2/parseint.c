@@ -27,10 +27,10 @@ int parseInt(char *string)
     
     if ( (*string != '0') ){
         for (i=1; i <= 4; i++){
-            converter = converter + (char)*string;
+            dec_converter = dec_converter + (char)*string;
             string++;
         }
-        return converter;
+        return dec_converter;
     }
 
     if ( (*string == '0') ){
