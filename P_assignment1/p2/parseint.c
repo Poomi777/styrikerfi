@@ -23,5 +23,9 @@ int parseInt(char *string)
 {
     (void)string;
 
-    return -1;
+    if ( (*string == 0) ){
+        return 99;
+    }
+
+    /*return -1 */;
 }
