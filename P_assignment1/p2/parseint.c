@@ -39,7 +39,7 @@ int parseInt(char *string)
             string++;
             dec_converter = dec_converter + *string;
         }
-        return dec_converter - '0';
+        return dec_converter - ('0'*2);
     }
 
     else if ( (*string == '0') ){
