@@ -27,7 +27,7 @@ int parseInt(char *string)
 
     for (i=1; i <= 4; i++) {
     	if ( (*string == '0') ){
-            *string++;
+            string++;
 
             if ( (*string == '1') ){
                 converter + (int)*string;
