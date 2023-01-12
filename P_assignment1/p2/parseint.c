@@ -34,7 +34,7 @@ int parseInt(char *string)
             return -1;
         }
 
-        return *string + '0';
+        return '10';
     }
 
     else if ( (*string == '0') ){
