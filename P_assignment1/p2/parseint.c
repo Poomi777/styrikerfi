@@ -13,7 +13,7 @@ int parseDecimalChar(char c)
         return -1;
     }
 
-    return c - '0';
+    return c + '0';
 }
 /*
  * Parses a non-negative integer, interpreted as octal when starting with 0,
