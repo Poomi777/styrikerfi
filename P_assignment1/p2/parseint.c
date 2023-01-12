@@ -46,8 +46,5 @@ int parseInt(char *string)
     }
     return converter;
 
-return -1;
+    return -1;
 }
-n -1;
-}
-
