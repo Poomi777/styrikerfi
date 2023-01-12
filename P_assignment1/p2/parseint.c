@@ -32,6 +32,7 @@ int parseInt(char *string)
             }
             string++;
         }
+        return converter - '0';
     }
 
     else if ( (*string == '0') ){
@@ -46,5 +47,7 @@ int parseInt(char *string)
     return converter;
 
 return -1;
+}
+n -1;
 }
 
