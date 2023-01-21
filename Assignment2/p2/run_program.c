@@ -21,7 +21,7 @@ int run_program(char *file_path, char *argv[])
 
     if (command == 0) {
         if (argv == NULL) {
-            execve(file_path, file_path, NULL);
+            execve(file_path, argv);
         }
         exit(ERROR_CODE);
     }
