@@ -19,7 +19,7 @@ int run_program(char *file_path, char *argv[])
 
     if (command == 0) {
         if (argv != NULL) {
-            execvp(*file_path, argv[0]);
+            execvp(file_path, argv);
         }
         exit(ERROR_CODE);
     }
