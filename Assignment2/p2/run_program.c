@@ -10,14 +10,13 @@
 int run_program(char *file_path, char *argv[])
 {
     int command = fork();
-    int status;
 
     if (file_path == NULL) {
         return ERROR_CODE;
     }
 
     if (command == 0) {
-        if (argv == NULL) {
+        if (argv == !NULL) {
             execvp(*file_path, argv[0]);
         }
         exit(ERROR_CODE);
