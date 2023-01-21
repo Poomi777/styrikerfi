@@ -1,7 +1,9 @@
 #include "run_program.h"
+#define _GNU_SOURCE
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 /*remember to check out https://man7.org/linux/man-pages/man3/exec.3.html*/
 
