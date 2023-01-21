@@ -9,9 +9,6 @@
 
 int run_program(char *file_path, char *argv[])
 {
-    (void) file_path;
-    (void) argv;
-
     int command = fork();
     int status;
 
@@ -21,21 +18,11 @@ int run_program(char *file_path, char *argv[])
 
     if (command == 0) {
         if (argv == NULL) {
-            execve(file_path, argv);
+            execvp(*file_path, argv[0]);
         }
         exit(ERROR_CODE);
     }
 
-    else if (command > 0) {
-        waitpid(command, &status, 0);
-
-        if (WIFEXITED(status)) {
-            return WEXITSTATUS(status);
-        }
-        else {
-            return ERROR_CODE;
-        }
-    }
     else {
         return ERROR_CODE;
     }
