@@ -18,7 +18,12 @@ int run_program(char *file_path, char *argv[])
         return ERROR_CODE;
     }
 
+
+
+
     if (pid == 0) {
+
+        /*
         if (execvp(file_path, argv) == -1) {
             return ERROR_CODE;
         }
@@ -26,7 +31,15 @@ int run_program(char *file_path, char *argv[])
             execvp(file_path, argv);
         }
         exit(ERROR_CODE);
+
+        */
+
+       if (execvp(file_path, argv) == -1) {
+        return ERROR_CODE;
+       }
     }
+
+
 /* WIFEXITED https://www.ibm.com/docs/en/ztpf/1.1.0.15?topic=zca-wifexitedquery-status-see-if-child-process-ended-normally*/
 /* WEXITSTATUS https://www.ibm.com/docs/en/ztpf/1.1.0.15?topic=apis-wexitstatusobtain-exit-status-child-process*/
 /* waitpid https://www.ibm.com/docs/en/ztpf/1.1.0.15?topic=apis-waitpidobtain-status-information-from-child-process*/
