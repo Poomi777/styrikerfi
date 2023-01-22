@@ -28,6 +28,13 @@ int run_program(char *file_path, char *argv[])
         exit(ERROR_CODE);
     }
 
+    else if (pid > 0) {
+        wait(NULL));
+
+        return ERROR_CODE;
+
+    }
+
     // remember to return ERROR_CODE on error.
     else {
         return ERROR_CODE;
