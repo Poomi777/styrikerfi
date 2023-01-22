@@ -29,7 +29,7 @@ int run_program(char *file_path, char *argv[])
     }
 
     else if (pid > 0) {
-        wait(NULL));
+        wait(NULL);
 
         return ERROR_CODE;
 
