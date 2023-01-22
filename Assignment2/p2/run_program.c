@@ -11,7 +11,7 @@
 
 int run_program(char *file_path, char *argv[])
 {
-    pid_t = fork();
+    pid_t pid = fork();
     int status;
 
     if (file_path == NULL) {
