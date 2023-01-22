@@ -12,7 +12,6 @@
 int run_program(char *file_path, char *argv[])
 {
     pid_t pid = fork();
-    int status;
 
     if (file_path == NULL) {
         return ERROR_CODE;
@@ -27,16 +26,6 @@ int run_program(char *file_path, char *argv[])
             execvp(file_path, argv);
         }
         exit(ERROR_CODE);
-    }
-
-    else if (pid > 0) {
-        waitpid(pid, &status, 0);
-        if (WIFEXITED(status)) {
-            return WEXITSTATUS(status);
-        }
-        else {
-            return ERROR_CODE;
-        }
     }
 
     // remember to return ERROR_CODE on error.
