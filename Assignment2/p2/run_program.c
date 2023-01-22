@@ -12,26 +12,31 @@
 int run_program(char *file_path, char *argv[])
 {
     pid_t pid = fork();
+    int status;
 
     if (file_path == NULL) {
         return ERROR_CODE;
     }
 
     if (pid == 0) {
-        if (argv == NULL) {
-            execlp(file_path, file_path, NULL);
+        if (execvp(file_path, argv) == -1) {
+            return ERROR_CODE;
         }
-        
-        else {
-            execvp(file_path, argv);
-        }
-        exit(ERROR_CODE);
     }
+/* WIFEXITED https://www.ibm.com/docs/en/ztpf/1.1.0.15?topic=zca-wifexitedquery-status-see-if-child-process-ended-normally*/
+/* WEXITSTATUS https://www.ibm.com/docs/en/ztpf/1.1.0.15?topic=apis-wexitstatusobtain-exit-status-child-process*/
+/* waitpid https://www.ibm.com/docs/en/ztpf/1.1.0.15?topic=apis-waitpidobtain-status-information-from-child-process*/
+
 
     else if (pid > 0) {
-        wait(pid);
+        waitpid(pid, status, 0);
+        if (WIFEXITED(status)) {
+            return WEXITSTATUS(status);
+        }
 
-        return ERROR_CODE;
+        else {
+            return ERROR_CODE
+        }
 
     }
 
