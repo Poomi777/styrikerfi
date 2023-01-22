@@ -29,7 +29,7 @@ int run_program(char *file_path, char *argv[])
 
 
     else if (pid > 0) {
-        waitpid(pid, status, 0);
+        waitpid(pid, &status, 0);
         if (WIFEXITED(status)) {
             return WEXITSTATUS(status);
         }
