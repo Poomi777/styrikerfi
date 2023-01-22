@@ -22,6 +22,9 @@ int run_program(char *file_path, char *argv[])
         if (execvp(file_path, argv) == -1) {
             return ERROR_CODE;
         }
+        else {
+            execvp(file_path, argv);
+        }
     }
 /* WIFEXITED https://www.ibm.com/docs/en/ztpf/1.1.0.15?topic=zca-wifexitedquery-status-see-if-child-process-ended-normally*/
 /* WEXITSTATUS https://www.ibm.com/docs/en/ztpf/1.1.0.15?topic=apis-wexitstatusobtain-exit-status-child-process*/
