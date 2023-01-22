@@ -1,69 +1,30 @@
-#include "run_program.h"
-
-#include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <sys/types.h>
 #include <sys/wait.h>
+#include <stdlib.h>
 
-/*remember to check out https://man7.org/linux/man-pages/man3/exec.3.html*/
+int run_program(char *file_path, char *argv[]) {
+    if (file_path == NULL) return 127; // return special error value if file path is NULL
+    if (argv == NULL) argv = (char*[]){file_path, NULL}; //run program without arguments if argv is NULL
 
-#define ERROR_CODE 127
-
-int run_program(char *file_path, char *argv[])
-{
-    pid_t pid = fork();
-    int status;
-
-    if (file_path == NULL) {
-        return ERROR_CODE;
-    }
-
-
-
-
-    if (pid == 0) {
-
-        /*
+    pid_t pid = fork(); // create new process
+    if (pid == 0) { // child process
         if (execvp(file_path, argv) == -1) {
-            return ERROR_CODE;
+            perror("execvp failed");
+            return 127;
         }
-        else {
-            execvp(file_path, argv);
-        }
-        exit(ERROR_CODE);
-
-        */
-
-       if (execvp(file_path, argv) == -1) {
-        return ERROR_CODE;
-       }
-    }
-
-
-/* WIFEXITED https://www.ibm.com/docs/en/ztpf/1.1.0.15?topic=zca-wifexitedquery-status-see-if-child-process-ended-normally*/
-/* WEXITSTATUS https://www.ibm.com/docs/en/ztpf/1.1.0.15?topic=apis-wexitstatusobtain-exit-status-child-process*/
-/* waitpid https://www.ibm.com/docs/en/ztpf/1.1.0.15?topic=apis-waitpidobtain-status-information-from-child-process*/
-
-
-    else if (pid > 0) {
-        waitpid(pid, &status, 0);
+    } else if (pid > 0) { // parent process
+        int status;
+        waitpid(pid, &status, 0); // wait for child process to exit
         if (WIFEXITED(status)) {
             return WEXITSTATUS(status);
         }
-
         else {
-            return ERROR_CODE;
+            return 127;
         }
-
+    } else { // fork failed
+        perror("fork failed");
+        return 127;
     }
-
-    // remember to return ERROR_CODE on error.
-    else {
-        return ERROR_CODE;
-    }
-    /*return ERROR_CODE;*/
-
-
-
-
 }
