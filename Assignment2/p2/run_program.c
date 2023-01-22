@@ -17,7 +17,7 @@ int run_program(char *file_path, char *argv[])
         return ERROR_CODE;
     }
 
-    if (command == 0) {
+    else {
         execvp(file_path, argv);
     }
 
