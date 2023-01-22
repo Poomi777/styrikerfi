@@ -35,7 +35,7 @@ int run_program(char *file_path, char *argv[])
         }
 
         else {
-            return ERROR_CODE
+            return ERROR_CODE;
         }
 
     }
