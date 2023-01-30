@@ -156,12 +156,12 @@ void onThreadWaiting(int threadId)
 int scheduleNextThread()
 {
     // TODO: Implement
-    int nextThread = _dequeue(&_readyQueue);
-    if (nextThread >= 0){
-        _threads[nextThread].state = STATE_RUNNING;
+    int theNextThread = _dequeue(&_readyQueue);
+    if (theNextThread >= 0){
+        _threads[theNextThread].state = STATE_RUNNING;
     }
     
-    return nextThread;
+    return theNextThread;
 }
 
 
