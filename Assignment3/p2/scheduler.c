@@ -1,5 +1,5 @@
-// Authors: abcde fghij [replace with your RU login IDs]
-// Group: xzy [replace with your group number]
+// Authors: poomi21@ru.is [replace with your RU login IDs]
+// Group: no group [replace with your group number]
 #include "scheduler.h"
 #include <stdlib.h>
 #include <assert.h>
@@ -48,6 +48,8 @@ Thread _threads[MAX_THREADS] = {{0}};
 
 /* TODO: Add global variables if needed. */
 
+Queue _readyQueue = {NULL, NULL};
+
 /*
  * Adds a new, waiting thread.
  * The new thread is in state WAITING and not yet inserted in a ready queue.
@@ -70,10 +72,22 @@ int startThread(int threadId)
  */
 void _enqueue(Queue *queue, int data)
 {
-    (void)queue;
-    (void)data;
-
     // TODO: Implement
+
+    QueueItem *newItem = (QueueItem*) malloc(sizeof(QueueItem));
+    newItem->data = data;
+    newItem->next = NULL;
+
+    if (queue->tail == NULL) {
+
+        queue->head = newItem;
+        queue->tail = newItem;
+    }
+
+    else {
+        queue->tail->next = newItem;
+        queue->tail = newItem;
+    }
 }
 
 /*
@@ -82,10 +96,23 @@ void _enqueue(Queue *queue, int data)
  */
 int _dequeue(Queue *queue)
 {
-    (void)queue;
 
     // TODO: Implement
-    return -1;
+    if (queue->head == NULL){
+        return -1;
+    }
+
+    int data = queue->head->data;
+
+    QueueItem *temp = queue->head;
+    queue->head = queue->head->next;
+
+    if (queue->head == NULL){
+        queue->tail = NULL;
+    }
+
+    free(temp);
+    return data;
 }
 
 void initScheduler()
@@ -98,9 +125,9 @@ void initScheduler()
  */
 void onThreadReady(int threadId)
 {
-    (void)threadId;
-
     // TODO: Implement
+    _threads[threadId].state = STATE_READY;
+    _enqueue(&_readyQueue, threadId);
 }
 
 /*
@@ -109,9 +136,9 @@ void onThreadReady(int threadId)
  */
 void onThreadPreempted(int threadId)
 {
-    (void)threadId;
-
     // TODO: Implement
+    _threads[threadId].state = STATE_READY;
+    _enqueue(&_readyQueue, threadId);
 }
 
 /*
@@ -119,9 +146,8 @@ void onThreadPreempted(int threadId)
  */
 void onThreadWaiting(int threadId)
 {
-    (void)threadId;
-
     // TODO: Implement
+    _threads[threadId].state = STATE_WAITING;
 }
 
 /*
@@ -130,7 +156,12 @@ void onThreadWaiting(int threadId)
 int scheduleNextThread()
 {
     // TODO: Implement
-    return 999;
+    int nextThread = _dequeue(&_readyQueue);
+    if (nextThread >= 0){
+        _threads[nextThread].state = STATE_RUNNING;
+    }
+    
+    return nextThread;
 }
 
 
