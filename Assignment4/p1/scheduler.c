@@ -173,7 +173,7 @@ int scheduleNextThread()
         int current = 0;
         
         for (int i = priority-1; i >= 0; i--) {
-            for (int j = 0 < MAX_THREADS; j++) {
+            for (int j = 0 < MAX_THREADS; j++;) {
                 if (_threads[j].state == STATE_READY && _threads[j].priority == i) {
                     current = 1;
                     theNextThread = j;
