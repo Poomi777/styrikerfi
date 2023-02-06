@@ -168,9 +168,9 @@ int scheduleNextThread()
 
    int threadId = -1;
    int highestPriority = HIGHEST_PRIORITY;
+   int counter = 0;
 
    while (threadId == -1) {
-    int counter = 0;
     threadId = _dequeue(&_readyQueue);
     
 
@@ -187,6 +187,8 @@ int scheduleNextThread()
         highestPriority--;
         _enqueue(&_readyQueue, threadId);
         threadId = -1;
+
+        counter = 0;
 
     }
    }
