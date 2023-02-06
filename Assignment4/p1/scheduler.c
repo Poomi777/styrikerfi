@@ -165,6 +165,10 @@ int scheduleNextThread()
     
     return theNextThread;
 
+   
+}
+
+
 #if 0
 int main() {
 	// Initially empty queue (head and tail is NULL)
