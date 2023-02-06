@@ -154,7 +154,7 @@ void onThreadWaiting(int threadId)
 /*
  * Gets the id of the next thread to run and sets its state to running.
  */
-int scheduleNextThread()
+int scheduleNextThread(int threadId)
 {
     // TODO: Implement
     /*
@@ -165,8 +165,6 @@ int scheduleNextThread()
     
     return theNextThread;
     */
-
-   int threadId = -1;
    int highestPriority = HIGHEST_PRIORITY;
 
    while (threadId == -1) {
