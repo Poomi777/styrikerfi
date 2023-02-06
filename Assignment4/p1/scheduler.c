@@ -45,9 +45,6 @@ typedef struct _Thread {
      * HIGHEST_PRIORITY is highest priority
      */
     int priority;
-
-
-    int count;
 } Thread;
 
 Thread _threads[MAX_THREADS] = {{0}};
@@ -151,7 +148,6 @@ void onThreadWaiting(int threadId)
 {
     // TODO: Implement
     _threads[threadId].state = STATE_WAITING;
-    _threads[threadId].count = 0;
 }
 
 
@@ -165,29 +161,11 @@ int scheduleNextThread()
     int theNextThread = _dequeue(&_readyQueue);
     if (theNextThread >= 0){
         _threads[theNextThread].state = STATE_RUNNING;
-        _threads[theNextThread].count++;
     }
     
-    if (theNextThread >= 0 && _threads[theNextThread].count == 4){
-        int priority = _threads[theNextThread].priority;
-        int current = 0;
-        
-        for (int i = priority-1; i >= 0; i--) {
-            for (int j = 0 < MAX_THREADS; j++;) {
-                if (_threads[j].state == STATE_READY && _threads[j].priority == i) {
-                    current = 1;
-                    theNextThread = j;
-                    break;
-                }
-            }
-
-            if (current == 1) {
-                break;
-            }
-        }
-    }
-
     return theNextThread;
+
+   
 }
 
 
