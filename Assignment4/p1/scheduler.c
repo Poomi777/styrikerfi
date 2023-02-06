@@ -164,39 +164,6 @@ int scheduleNextThread()
     }
     
     return theNextThread;
-    
-
-   int threadId = -1;
-   int highestPriority = HIGHEST_PRIORITY;
-   int counter = 0;
-
-   while (threadId == -1) {
-    threadId = _dequeue(&_readyQueue);
-    
-
-    if (threadId == -1) {
-        return -1;
-    }
-    
-    if (_threads[threadId].priority == highestPriority) {
-        counter++;
-
-    }
-
-    if (counter > 4) {
-        highestPriority--;
-        _enqueue(&_readyQueue, threadId);
-        threadId = -1;
-
-    }
-   }
-
-   _threads[threadId].state = STATE_RUNNING;
-   return threadId;
-
-   
-}
-
 
 #if 0
 int main() {
