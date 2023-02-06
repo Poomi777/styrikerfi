@@ -158,37 +158,13 @@ int scheduleNextThread()
 {
     // TODO: Implement
     
-    /*
     int theNextThread = _dequeue(&_readyQueue);
     if (theNextThread >= 0){
         _threads[theNextThread].state = STATE_RUNNING;
     }
     
     return theNextThread;
-*/
 
-    int highestPriorityQueue = getHighestPriorityQueueContainingAReadyThread();
-    if (highestPriorityQueue != -1) {
-        // Get the first thread from the queue
-        int threadId = getFirstThreadFromQueue(highestPriorityQueue);
-        if (threadId != -1) {
-            // Update the thread's state
-            setThreadState(threadId, STATE_RUNNING);
-
-            // Check if the thread has been selected four times
-            int numSelections = getThreadNumSelections(threadId);
-            if (numSelections == 4) {
-                // Choose the next lower priority queue that does not break the starvation prevention rule
-                int nextLowerPriorityQueue = getNextLowerPriorityQueueThatDoesNotBreakStarvationPreventionRule();
-                threadId = getFirstThreadFromQueue(nextLowerPriorityQueue);
-            }
-
-            // Return the selected thread ID
-            return threadId;
-        }
-    }
-
-    return -1;
    
 }
 
