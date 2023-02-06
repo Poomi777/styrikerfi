@@ -144,6 +144,13 @@ void onThreadPreempted(int threadId)
     _enqueue(&_readyQueue, threadId);
 }
 
+void onThreadWaiting(int threadId)
+{
+    // TODO: Implement
+    _threads[threadId].state = STATE_WAITING;
+}
+
+
 /*
  * Gets the id of the next thread to run and sets its state to running.
  */
