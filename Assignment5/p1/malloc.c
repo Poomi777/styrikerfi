@@ -84,7 +84,7 @@ void *my_malloc(uint64_t size)
 
     // TODO: Implement
     Block *current, *prev = NULL, *freeblock = NULL;
-    int roundedSize = roundUp(size);
+    uint64_t roundedSize = roundUp(size);
 
     current = _firstFreeBlock;
     while (current) {
@@ -116,7 +116,7 @@ void *my_malloc(uint64_t size)
         return (void*)&freeblock->data[0];
     }
 
-    current = (Block*)&best->data[roundedSize];
+    current = (Block*)&freeblock->data[roundedSize];
     current->size = freeblock->size - roundedSize;
     current->next = freeblock->next;
 
