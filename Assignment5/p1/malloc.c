@@ -84,7 +84,7 @@ void *my_malloc(uint64_t size)
 
     // TODO: Implement
     Block *current, *prev = NULL, *freeblock = NULL;
-    uint64_t roundedSize = roundUp(size);
+    uint64_t roundedSize = roundUp(size + HEADER_SIZE);
 
     current = _firstFreeBlock;
     while (current) {
@@ -104,8 +104,25 @@ void *my_malloc(uint64_t size)
         return NULL;
     } 
 
-    if (freeblock->size == roundedSize) {
+    if (freeblock->size == roundedSize + HEADER_SIZE) {
 
+        Block *newBlock = (Block*)&freeblock->data[roundedSize];
+        
+        newBlock->next = freeblock->next;
+        newBlock->size = freeblock->size - roundedSize;
+
+        if (prev) {
+            prev->next = newBlock;
+        }
+
+        else {
+            _firstFreeBlock = newBlock;
+        }
+
+        freeblock->next = NULL;
+    }
+
+    else {
         if (prev) {
             prev->next = freeblock->next;
         }
@@ -113,70 +130,32 @@ void *my_malloc(uint64_t size)
         else {
             _firstFreeBlock = freeblock->next;
         }
-
-        return &freeblock->data[0];
     }
-
-    current = (Block*)&freeblock->data[roundedSize];
-    current->size = freeblock->size - roundedSize;
-    current->next = freeblock->next;
 
     freeblock->size = roundedSize;
-    freeblock->next = NULL;
-
-    if (prev) {
-        prev->next = current;
-
-    }
-
-    else {
-        _firstFreeBlock = current;
-    }
-
-    return (void*)&freeblock->data[0];
+    
+    return &freeblock->data[0];
 }
 
 void my_free(void *address)
 {
 
     // TODO: Implement
-    if (address == NULL ) {
-        return;
+    Block *block = (Block*)((uint8_t*)address - HEADER_SIZE);
+    Block *current = _firstFreeBlock;
+
+    if (current == NULL) {
+        _firstFreeBlock = block;
+        block->next = NULL;
+
+    } 
     
-    }
-
-    Block *current, *prev = NULL, *free = (Block*)( (uint8_t*)address - HEADER_SIZE );
-    Block *outBlock = _getNextBlockBySize(free);
-
-    current = _firstFreeBlock;
-
-    while (current && current < free) {
-        prev = current;
-        current = current->next;
-
-    }
-
-    if (prev && (Block*)&prev->data[prev->size - HEADER_SIZE] == free) {
-        prev->size += free->size;
-        free = prev;
-    }
-
     else {
-        free->next = current;
-
-        if (prev) {
-            prev->next = free;
+        while (current->next != NULL) {
+            current = current->next;
         }
 
-        else {
-            _firstFreeBlock = free;
-        }
-    }
-
-    if (outBlock && outBlock->next == NULL) {
-        free->size += outBlock->size;
-        free->next = outBlock->next;
+        current->next = block;
+        block->next = NULL;
     }
 }
-
-
