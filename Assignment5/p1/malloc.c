@@ -104,7 +104,7 @@ void *my_malloc(uint64_t size)
         return NULL;
     } 
 
-    if (freeblock->size == roundedSize + HEADER_SIZE) {
+    if (freeblock->size == roundedSize + HEADER_SIZE + sizeof(Block)) {
 
         Block *newBlock = (Block*)&freeblock->data[roundedSize];
         
@@ -119,7 +119,7 @@ void *my_malloc(uint64_t size)
             _firstFreeBlock = newBlock;
         }
 
-        freeblock->next = NULL;
+        freeblock->size= roundedSize;
     }
 
     else {
@@ -131,8 +131,6 @@ void *my_malloc(uint64_t size)
             _firstFreeBlock = freeblock->next;
         }
     }
-
-    freeblock->size = roundedSize;
     
     return &freeblock->data[0];
 }
@@ -149,7 +147,7 @@ void my_free(void *address)
         block->next = NULL;
 
     } 
-    
+
     else {
         while (current->next != NULL) {
             current = current->next;
