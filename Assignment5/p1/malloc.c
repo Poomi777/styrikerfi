@@ -84,7 +84,7 @@ void *my_malloc(uint64_t size)
 
     // TODO: Implement
     Block *current, *prev = NULL, *freeblock = NULL;
-    uint64_t roundedSize = roundUp(size + HEADER_SIZE);
+    uint64_t roundedSize = roundUp(size);
 
     current = _firstFreeBlock;
     while (current) {
@@ -104,22 +104,8 @@ void *my_malloc(uint64_t size)
         return NULL;
     } 
 
-    if (freeblock->size == roundedSize + HEADER_SIZE) {
-        Block *newblock = (Block*)&freeblock->data[roundedSize];
+    if (freeblock->size == roundedSize) {
 
-        newblock->next = freeblock->next;
-        newblock->size = freeblock->size - roundedSize;
-
-        if (prev) {
-            prev->next = newblock;
-        }
-
-        else {
-            _firstFreeBlock = newblock;
-        }
-    }
-
-    else {
         if (prev) {
             prev->next = freeblock->next;
         }
@@ -127,9 +113,27 @@ void *my_malloc(uint64_t size)
         else {
             _firstFreeBlock = freeblock->next;
         }
+
+        return &freeblock->data[0];
     }
 
-    return &freeblock->data[0];
+    current = (Block*)&freeblock->data[roundedSize];
+    current->size = freeblock->size - roundedSize;
+    current->next = freeblock->next;
+
+    freeblock->size = roundedSize;
+    freeblock->next = NULL;
+
+    if (prev) {
+        prev->next = current;
+
+    }
+
+    else {
+        _firstFreeBlock = current;
+    }
+
+    return (void*)&freeblock->data[0];
 }
 
 void my_free(void *address)
