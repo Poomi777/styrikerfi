@@ -84,7 +84,7 @@ void *my_malloc(uint64_t size)
 
     // TODO: Implement
     Block *current, *prev = NULL, *freeblock = NULL;
-    uint64_t roundedSize = roundUp(size);
+    uint64_t roundedSize = roundUp(size + HEADER_SIZE);
 
     current = _firstFreeBlock;
     while (current) {
