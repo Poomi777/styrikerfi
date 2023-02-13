@@ -144,7 +144,7 @@ void my_free(void *address)
     
     }
 
-    Block *current, *prev = NULL, *free = (Block*)( (int*)address - HEADER_SIZE );
+    Block *current, *prev = NULL, *free = (Block*)( (uint8_t*)address - HEADER_SIZE );
     Block *outBlock = _getNextBlockBySize(free);
 
     current = _firstFreeBlock;
