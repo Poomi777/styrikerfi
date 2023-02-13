@@ -132,7 +132,7 @@ void *my_malloc(uint64_t size)
         _firstFreeBlock = current;
     }
 
-    return (void*)&best->data[0];
+    return (void*)&freeblock->data[0];
 }
 
 void my_free(void *address)
