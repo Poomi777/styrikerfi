@@ -74,7 +74,7 @@ uint64_t roundUp(uint64_t n)
 {
 
     //TODO: Implement
-    int remaining = n % 16;
+    uint64_t remaining = n % 16;
 
     return (remaining == 0) ? n : n + (16- remaining);
 }
@@ -104,7 +104,7 @@ void *my_malloc(uint64_t size)
         return NULL;
     } 
 
-    if ( freeblock->size == roundedSize) {
+    if (freeblock->size == roundedSize) {
         if (prev) {
             prev->next = freeblock->next;
         }
