@@ -81,17 +81,101 @@ uint64_t roundUp(uint64_t n)
 
 void *my_malloc(uint64_t size)
 {
-    (void) size;
 
     // TODO: Implement
-    return NULL;
+    Block *current, *prev = NULL, *freeblock = NULL;
+    int roundedSize = roundUp(size);
+
+    current = _firstFreeBlock;
+    while (current) {
+        if (current->size >= roundedSize) {
+
+            if (!freeblock || current->size < freeblock->size) {
+                freeblock = current;
+                prev = NULL;
+            }
+        }
+
+        prev = current;
+        current = current->next;
+    }
+
+    if (!freeblock ) {
+        return NULL;
+    } 
+
+    if ( freeblock->size == roundedSize) {
+        if (prev) {
+            prev->next = freeblock->next;
+        }
+
+        else {
+            _firstFreeBlock = freeblock->next;
+        }
+
+        return (void*)&freeblock->data[0];
+    }
+
+    current = (Block*)&best->data[roundedSize];
+    current->size = freeblock->size - roundedSize;
+    current->next = freeblock->next;
+
+    freeblock->size = roundedSize;
+    freeblock->next = NULL;
+
+    if (prev) {
+        prev->next = current;
+
+    }
+    
+    else {
+        _firstFreeBlock = current;
+    }
+
+    return (void*)&best->data[0];
 }
 
 void my_free(void *address)
 {
-    (void) address;
 
     // TODO: Implement
+    if (address == NULL ) {
+        return;
+    
+    }
+
+    Block *current, *prev = NULL, *free = (Block*)( (int*)address - HEADER_SIZE );
+    Block *outBlock = _getNextBlockBySize(free);
+
+    current = _firstFreeBlock;
+
+    while (current && current < free) {
+        prev = current;
+        current = current->next;
+
+    }
+
+    if (prev && (Block*)&prev->data[prev->size - HEADER_SIZE] == free) {
+        prev->size += free->size;
+        free = prev;
+    }
+
+    else {
+        free->next = current;
+
+        if (prev) {
+            prev->next = free;
+        }
+
+        else {
+            _firstFreeBlock = free;
+        }
+    }
+
+    if (outBlock && outBlock->next == NULL) {
+        free->size += outBlock->size;
+        free->next = outBlock->next;
+    }
 }
 
 
