@@ -26,7 +26,7 @@ uint64_t measureFunction( void(*function)(void *), void *arg ) {
 	uint64_t endTime;
 
 	startTime = getTimeStamp();
-	(*function)(arg;);
+	(*function)(arg);
 	endTime = getTimeStamp();
 
 
