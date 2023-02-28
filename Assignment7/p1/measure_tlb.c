@@ -93,8 +93,8 @@ void accessMemoryWrapper(void *p) {
 	// (void)p;
 	// Implement this function
 
-	MeasurementParameters *param = (MeasurementParameters*)p;
+	MeasurementParameters *parameter = (MeasurementParameters*)p;
 
-	accessMemory(param->n, param->pages);
+	accessMemory(parameter->iterattions, parameter->pages);
 }
 
