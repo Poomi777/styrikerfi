@@ -2,6 +2,7 @@
 // Group:  no group
 
 #include "measure_tlb.h"
+#include <stdint.h>
 #include <sys/time.h>
 
 #define PAGESIZE 4096
@@ -14,7 +15,7 @@ uint64_t getTimeStamp() {
 
 	gettimeofday(&tv, NULL);
 	
-	return (uint64_t)tv.tv_sec * 1000000 + (uint16_t)tv.tv_usec;
+	return (uint64_t)tv.tv_sec * 1000000 + (uint64_t)tv.tv_usec;
 }
 
 
