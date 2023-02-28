@@ -4,6 +4,7 @@
 #include "measure_tlb.h"
 #include <stdint.h>
 #include <sys/time.h>
+#include <stdlib.h>
 
 #define PAGESIZE 4096
 
@@ -25,7 +26,7 @@ uint64_t measureFunction( void(*function)(void *), void *arg ) {
 	uint64_t endTime;
 
 	startTime = getTimeStamp();
-	(*function)(arg;)
+	(*function)(arg;);
 	endTime = getTimeStamp();
 
 
