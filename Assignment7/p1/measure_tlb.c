@@ -11,7 +11,7 @@ uint64_t getTimeStamp() {
 	// Implement this function.
 	//https://man7.org/linux/man-pages/man2/settimeofday.2.html
 
-	struct timevalue tv;
+	struct timeval tv;
 
 	gettimeofday(&tv, NULL);
 	
