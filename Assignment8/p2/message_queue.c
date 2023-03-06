@@ -101,7 +101,7 @@ int stopClient(mqd_t client)
     if (closed_messg == -1) {
         perror("Error closing message queue");
     }
-    return closed_messg
+    return closed_messg;
 
 }
 
