@@ -39,42 +39,69 @@ typedef struct _Message {
 mqd_t startClient(void)
 {
     // TODO: Open the message queue previously created by the server
-    return -1;}
+    mqd_t client = mq_open(QUEUE_NAME, O_WRONLY);
+    if (client == -1) {
+        perror("Error opening message queue");
+    }
+    return client;
+}
 
 int sendExitTask(mqd_t client)
 {
-    (void)client;
 
     // TODO: Send the exit command to the server.
-    return -1;
+    Message msg;
+    msg.command = CmdExit;
+
+    int sent_messg = mq_send(client, (char*)&msg, sizeof(msg), 0);
+    if (sent_messg == -1) {
+        perror("Error sending message");
+    }
+    return sent_messg;
 }
 
 int sendAddTask(mqd_t client, int operand1, int operand2)
 {
-    (void)client;
-    (void)operand1;
-    (void)operand2;
 
     // TODO: Send the add command with the operands
-    return -1;
+    Message msg;
+    
+    msg.command = CmdAdd;
+    msg.parameter1 = operand1;
+    msg.parameter2 = operand2;
+
+    int sent_messg = mq_send(client, (char*)&msg, sizeof(msg), 0);
+    if (sent_messg == -1) {
+        perror("Error sending message");
+    }
+    return sent;
 }
 
 int sendSubtractTask(mqd_t client, int operand1, int operand2)
 {
-    (void)client;
-    (void)operand1;
-    (void)operand2;
 
     // TODO: Send the sub command with the operands
-    return -1;
+    Message msg;
+    msg.command = CmdSubtract;
+    msg.parameter1 = operand1
+    messg.parameter2 = operand2;
+
+    int sent_messg = mq_send(client, (char*)&msg, sizeof(msg), 0);
+    if (sent_messg == -1) {
+        perror("Error sending message");
+    }
+    return sent;
 }
 
 int stopClient(mqd_t client)
 {
-    (void)client;
 
     // TODO: Clean up anything on the client-side
-    return -1;
+    int closed_messg = mq_close(client);
+    if (closed_messg == -1) {
+        perror("Error closing message queue");
+    }
+    return closed
 
 }
 
@@ -93,9 +120,10 @@ int runServer(void)
     // TODO:
     // Create and open the message queue. Server only needs to read from it.
     // Clients only need to write to it, allow for all users.
-    mqd_t server = -1;
+    mqd_t server = mq_open(QUEUE_NAME, O_RDONLY | O_CREAT | O_EXCL, S_IRWXU, | S_IRWXG | S_IRWXO, &attr);
     if(server == -1) {
-	return -1;
+        perror("mq_open");
+        return -1;
     }
 
 
@@ -134,6 +162,7 @@ int runServer(void)
                 break;
 
             default:
+                hadError = 1;
                 break;
         }
     } while (!didExit);
@@ -141,6 +170,15 @@ int runServer(void)
 
     // TODO
     // Close the message queue on exit and unlink it
+    if (mq_close(server) == -1) {
+        perror("mq_close");
+        hadError = 1;
+    }
 
+    if (mq_unlink(QUEUE_NAME) == -1) {
+        perror("mq_unlink");
+        hadError = 1;
+    }
+    
     return hadError ? -1 : 0;
 }
