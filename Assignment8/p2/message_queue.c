@@ -120,7 +120,7 @@ int runServer(void)
     // TODO:
     // Create and open the message queue. Server only needs to read from it.
     // Clients only need to write to it, allow for all users.
-    mqd_t server = mq_open(QUEUE_NAME, O_RDONLY | O_CREAT | O_EXCL, S_IRWXU, | S_IRWXG | S_IRWXO, &attr);
+    mqd_t server = mq_open(QUEUE_NAME, O_RDONLY | O_CREAT | O_EXCL, S_IRWXU | S_IRWXG | S_IRWXO, &attr);
     if(server == -1) {
         perror("mq_open");
         return -1;
