@@ -49,7 +49,7 @@ int run_program(char *argv[])
     } 
     
     else {
-        close(pipe_fds[1]);
+        close(pipe_fileDescript[1]);
 
         int status, hadError = 0;
 
