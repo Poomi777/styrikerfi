@@ -84,7 +84,7 @@ int sendSubtractTask(mqd_t client, int operand1, int operand2)
     Message msg;
     msg.command = CmdSubtract;
     msg.parameter1 = operand1;
-    messg.parameter2 = operand2;
+    msg.parameter2 = operand2;
 
     int sent_messg = mq_send(client, (char*)&msg, sizeof(msg), 0);
     if (sent_messg == -1) {
