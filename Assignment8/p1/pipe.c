@@ -29,7 +29,7 @@ int run_program(char *argv[])
     if (child_pid == -1) {
         close(pipe_fileDescript[0]);
         close(pipe_fileDescript[1]);
-        return -1
+        return -1;
     } 
     
     else if (child_pid == 0) {
