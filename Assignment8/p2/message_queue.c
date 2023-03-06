@@ -74,7 +74,7 @@ int sendAddTask(mqd_t client, int operand1, int operand2)
     if (sent_messg == -1) {
         perror("Error sending message");
     }
-    return sent;
+    return sent_messg;
 }
 
 int sendSubtractTask(mqd_t client, int operand1, int operand2)
@@ -83,14 +83,14 @@ int sendSubtractTask(mqd_t client, int operand1, int operand2)
     // TODO: Send the sub command with the operands
     Message msg;
     msg.command = CmdSubtract;
-    msg.parameter1 = operand1
+    msg.parameter1 = operand1;
     messg.parameter2 = operand2;
 
     int sent_messg = mq_send(client, (char*)&msg, sizeof(msg), 0);
     if (sent_messg == -1) {
         perror("Error sending message");
     }
-    return sent;
+    return sent_messg;
 }
 
 int stopClient(mqd_t client)
@@ -101,7 +101,7 @@ int stopClient(mqd_t client)
     if (closed_messg == -1) {
         perror("Error closing message queue");
     }
-    return closed
+    return closed_messg
 
 }
 
@@ -179,6 +179,6 @@ int runServer(void)
         perror("mq_unlink");
         hadError = 1;
     }
-    
+
     return hadError ? -1 : 0;
 }
