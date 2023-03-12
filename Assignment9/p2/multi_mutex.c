@@ -30,21 +30,18 @@ int multi_mutex_trylock(pthread_mutex_t **mutexv)
     }
 
     int i = 0;
-    int success = 1;
+    int acquired = 0;
 
-    while (mutexv[i] != NULL && success) {
+    while (mutexv[i] != NULL) {
         int returner = pthread_mutex_trylock(mutexv[i]);
 
         if (returner != 0) {
-            multi_mutex_unlock(mutexv);
-            success = 0;
+            multi_mutex_unlock(mutexv, i);
+            return -1;
         }
 
         i++;
-    }
-
-    if (!success) {
-        return -1;
+        acquired++;
     }
 }
 
