@@ -17,7 +17,7 @@ int multi_mutex_unlock(pthread_mutex_t **mutexv)
         int returner = pthread_mutex_unlock(mutexv[i]);
 
         if (returner != 0) {
-            return -1
+            return -1;
         }
         i++;
     }
