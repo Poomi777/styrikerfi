@@ -59,7 +59,7 @@ int multi_mutex_lock(pthread_mutex_t **mutexv)
 
     int i = 0;
     int acquired = 0;
-    int backoff = 1
+    int backoff = 1;
 
     struct timespec ts;
 
