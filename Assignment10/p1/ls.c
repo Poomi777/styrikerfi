@@ -14,6 +14,7 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <limits.h>
 
 // Use this function to display the files. DO NOT CHANGE IT.
 void _printLine(unsigned int size, unsigned int sizeOnDisk, const char* name)
