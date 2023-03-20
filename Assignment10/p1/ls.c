@@ -33,7 +33,7 @@ int list(const char* path, const char *suffixFilter)
 
     directory = opendir(path);
     if (directory == NULL) {
-        perror("opendir")
+        perror("opendir");
         return -1;
     }
 
