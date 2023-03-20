@@ -44,7 +44,7 @@ int list(const char* path, const char *suffixFilter)
         snprintf(full_path, MAX_FILE_NAME_LENGTH, "%s/%s", path, entry->d_name);
 
         if (stat(full_path, &st) != 0) {
-            fprintf(stderr, "Failed to stat the file %s\n", entry->d_name, strerror(errno));
+            fprintf(stderr, "Failed to stat the file %s: %s\n", entry->d_name, strerror(errno));
             continue;
         }
 
