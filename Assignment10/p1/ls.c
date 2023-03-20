@@ -58,6 +58,6 @@ int list(const char* path, const char *suffixFilter)
         _printLine(size, sizeOnDisk, entry->d_name);
     }
 
-    closedir(dir);
+    closedir(directory);
     return 0;
 }
