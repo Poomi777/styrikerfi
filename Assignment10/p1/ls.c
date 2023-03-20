@@ -59,7 +59,7 @@ int list(const char* path, const char *suffixFilter)
             char *suffix = strrchr(entry->d_name, '.');
 
             if (suffix == NULL || strcmp(suffix, suffixFilter) != 0) {
-                continue
+                continue;
             }
         }
 
