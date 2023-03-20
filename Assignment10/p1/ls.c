@@ -43,7 +43,7 @@ int list(const char* path, const char *suffixFilter)
             continue;
         }
 
-        snprintf(full_path, sizeof(filepath), "%s/%s", path, entry->d_name);
+        snprintf(filepath, sizeof(filepath), "%s/%s", path, entry->d_name);
 
         if (stat(filepath, &st) == -1) {
             fprintf(stderr, "Failed to stat the file %s: %s\n", filepath, strerror(errno));
