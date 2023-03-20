@@ -69,7 +69,7 @@ int doCopy(CopyArgs* args)
     }
 
     struct stat st;
-    
+
     if (stat(args->to, %st) == 0) {
         fprintf(stderr, "Destination file already exists\n");
         close(source_file);
@@ -101,7 +101,7 @@ int doCopy(CopyArgs* args)
             if (lseek(destination_file, bytes_read, SEEK_CUR) == -1) {
                 perror("Failed to seek destination file");
                 close(source_file);
-                close(destination_file)
+                close(destination_file);
                 return -1;
             }
         }
@@ -111,7 +111,7 @@ int doCopy(CopyArgs* args)
                 perror("Failed to write to destination file");
                 close(source_file);
                 close(destination_file);
-                return -1
+                return -1;
             }
         }
     }
