@@ -40,6 +40,13 @@ int list(const char* path, const char *suffixFilter)
             continue;
         }
 
+        if (suffixFilter != NULL && strcmp(suffixFilter, "") != 0) {
+            char *suffix = strrchar(entry->d_name, '.');
+            if (suffix == NULL || strcmp(suffix, suffixFilter) != 0) {
+                continue;
+            }
+        }
+
         char full_path[MAX_FILE_NAME_LENGTH + strlen(path) + 2];
         snprintf(full_path, sizeof(full_path), "%s/%s", path, entry->d_name);
 
