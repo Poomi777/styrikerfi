@@ -50,7 +50,7 @@ int list(const char* path, const char *suffixFilter)
         }
 
         if ((strcmp(entry->d_name, ".") == 0) || (strcmp(entry->d_name, "..") == 0)) {
-            continue
+            continue;
         }
 
         strcpy(file, path);
