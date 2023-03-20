@@ -14,7 +14,6 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <limits.h>
 
 // Use this function to display the files. DO NOT CHANGE IT.
 void _printLine(unsigned int size, unsigned int sizeOnDisk, const char* name)
@@ -41,8 +40,8 @@ int list(const char* path, const char *suffixFilter)
             continue;
         }
 
-        char full_path[MAX_FILE_NAME_LENGTH];
-        snprintf(full_path, MAX_FILE_NAME_LENGTH, "%s/%s", path, entry->d_name);
+        char full_path[MAX_FILE_NAME_LENGTH + strlen(path) + 2];
+        snprintf(full_path, sizeof(full_path), "%s/%s", path, entry->d_name);
 
         struct stat st;
         
