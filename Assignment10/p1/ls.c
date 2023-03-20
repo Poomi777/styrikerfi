@@ -35,7 +35,7 @@ int list(const char* path, const char *suffixFilter)
     struct dirent* entry;
     struct stat st;
 
-    while ((entry = readdir(dir))) {
+    while ((entry = readdir(directory))) {
         if (entry->d_name[0] == '.') {
             continue;
         }
