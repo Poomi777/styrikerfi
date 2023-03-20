@@ -47,7 +47,7 @@ int list(const char* path, const char *suffixFilter)
             }
         }
 
-        char full_path[MAX_FILE_NAME_LENGTH];
+        char full_path[MAX_FILE_NAME_LENGTH + strlen(path) + 2];
         snprintf(full_path, sizeof(full_path), "%s/%s", path, entry->d_name);
 
         struct stat st;
