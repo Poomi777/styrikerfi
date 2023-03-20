@@ -70,7 +70,7 @@ int doCopy(CopyArgs* args)
 
     struct stat st;
 
-    if (stat(args->to, %st) == 0) {
+    if (stat(args->to, &st) == 0) {
         fprintf(stderr, "Destination file already exists\n");
         close(source_file);
         return -1;
@@ -124,7 +124,7 @@ int doCopy(CopyArgs* args)
     }
 
 
-    if (fchmod(destination_file, S_IRUSR) == -1) {
+    if (chmod(destination_file, S_IRUSR) == -1) {
         perror("Failed to set permissions on destination file");
         close(source_file);
         close(destination_file);
