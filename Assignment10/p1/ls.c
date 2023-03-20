@@ -26,38 +26,50 @@ void _printLine(unsigned int size, unsigned int sizeOnDisk, const char* name)
 
 int list(const char* path, const char *suffixFilter)
 {
-    DIR* directory = opendir(path);
+    DIR *directory = opendir(path);
     if (!directory) {
-        fprintf(stderr, "Failed to open directory: %s\n", strerror(errno));
+        fprintf(stderr, "Failed to open directory: %s: %s\n", path, strerror(errno));
         return -1;
     }
 
-    struct dirent* entry;
+    struct dirent *entry;
     struct stat st;
 
-    while ((entry = readdir(directory))) {
+    char filepath(PATH_MAX);
+    int returner = 0;
+
+    while ((entry = readdir(directory)) != NULL) {
         if (entry->d_name[0] == '.') {
             continue;
         }
 
-        char full_path[MAX_FILE_NAME_LENGTH];
-        snprintf(full_path, MAX_FILE_NAME_LENGTH, "%s/%s", path, entry->d_name);
+        snprintf(full_path, sizeof(filepath), "%s/%s", path, entry->d_name);
 
-        if (stat(full_path, &st) != 0) {
-            fprintf(stderr, "Failed to stat the file %s: %s\n", entry->d_name, strerror(errno));
+        if (stat(filepath, &st) == -1) {
+            fprintf(stderr, "Failed to stat the file %s: %s\n", filepath, strerror(errno));
+            returner = -1;
             continue;
         }
 
-        if (!S_ISREG(st.st_mode)) {
+        if (!S_ISDIR(st.st_mode)) {
             continue;
         }
 
-        unsigned int size = st.st_size;
-        unsigned int sizeOnDisk = (st.st_blocks * 512);
+        if (suffixFilter != NULL && strcmp(suffixFilter, "") != 0) {
+            char *suffix = strrchr(entry->d_name, '.');
 
-        _printLine(size, sizeOnDisk, entry->d_name);
+            if (suffix == NULL || strcmp(suffix, suffixFilter) != 0) {
+                continue
+            }
+        }
+
+        _printLine(st.st_size, st.st_blocks * 512, entry->d_name);
     }
 
-    closedir(directory);
-    return 0;
+    if (closedir(directory) == -1) {
+        fprintf(stderr, "Failed to close directory %s: %s\n", path, strerror(errno));
+        return -1;
+    }
+
+    return returner;
 }
