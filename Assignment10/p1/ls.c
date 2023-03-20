@@ -28,51 +28,34 @@ void _printLine(unsigned int size, unsigned int sizeOnDisk, const char* name)
 int list(const char* path, const char *suffixFilter)
 {
     DIR *directory = opendir(path);
+
     if (directory == NULL) {
-        perror("Failed to open directory");
+        perror("opendir failed");
         return -1;
     }
 
     struct dirent *entry;
-    struct stat st;
 
     while ((entry = readdir(directory)) != NULL) {
         if (entry->d_name[0] == '.') {
             continue;
         }
 
-        char file_path(PATH_MAX);
-        snprintf(file_path, PATH_MAX, "%s/%s", path, entry->d_name);
+        char full_path[MAX_FILE_NAME_LENGTH];
+        snprintf(full_path, MAX_FILE_NAME_LENGTH, "%s/%s", path, entry->d_name);
 
-        if (lstat(file_path, &st) == -1) {
-            perror("Failed to stat file");
+        struct stat st;
+        
+        if (stat(full_path, &st) == -1) {
+            perror("failed to stat");
+            
+            closedir(directory);
             return -1;
         }
 
-        if (S_ISDIR(st.st_mode)) {
-            list(file_path, suffixFilter);
-        }
-
-        else {
-            unsigned int size = st.st_size;
-            unsigned int sizeOnDisk = st.st_blocks * 512;
-
-            char *file_name = strrchr(file_path, '/') + 1;
-            _printLine(size, sizeOnDisk, file_name);
-        }
+        _printLine(st.st_size, st.st_blocks * 512, entry->d_name);
     }
 
-
-    if (errno != 0) {
-        perror("Failed to read directory");
-        return -1;
-    }
-
-    if (closedir(directory) == -1) {
-        perror("Failed to close directory");
-        return -1;
-    }
-
+    closedir(directory);
     return 0;
-    
 }
