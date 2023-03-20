@@ -64,11 +64,12 @@ int doCopy(CopyArgs* args)
     int source_file = open(args->from, O_RDONLY);
 
     if (source_file == -1) {
-        perror("Failed to open source file")
+        perror("Failed to open source file");
         return -1;
     }
 
     struct stat st;
+    
     if (stat(args->to, %st) == 0) {
         fprintf(stderr, "Destination file already exists\n");
         close(source_file);
