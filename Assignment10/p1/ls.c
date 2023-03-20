@@ -40,7 +40,7 @@ int list(const char* path, const char *suffixFilter)
             continue;
         }
 
-        char full_path [MAX_FILE_NAME_LENGTH];
+        char full_path[MAX_FILE_NAME_LENGTH];
         snprintf(full_path, MAX_FILE_NAME_LENGTH, "%s/%s", path, entry->d_name);
 
         if (stat(full_path, &st) != 0) {
