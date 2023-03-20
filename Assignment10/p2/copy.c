@@ -124,7 +124,7 @@ int doCopy(CopyArgs* args)
     }
 
 
-    if (chmod(destination_file, S_IRUSR) == -1) {
+    if (chmod(args->to, S_IRUSR) == -1) {
         perror("Failed to set permissions on destination file");
         close(source_file);
         close(destination_file);
