@@ -33,17 +33,13 @@ int list(const char* path, const char *suffixFilter)
 
     directory = opendir(path);
     if (directory == NULL) {
+        perror("opendir")
         return -1;
     }
 
     char file[MAX_FILE_NAME_LENGTH];
 
-    while (1) {
-        entry = readdir(directory);
-
-        if (entry == NULL) {
-            break;
-        }
+    while ((entry = readdir(directory)) != NULL) {
 
         if (entry->d_name[0] == '.') {
             continue;
@@ -57,16 +53,17 @@ int list(const char* path, const char *suffixFilter)
         strcat(file, "/");
         strcat(file, entry->d_name);
 
-        if (lstat(file, &info) == -1) {
+        if (lstat(file, &st) == -1) {
             return -1;
         }
 
-        unsigned int size = info.st_size;
-        unsigned int sizeOnDisk = info.st_blocks * 512;
+        unsigned int size = st.st_size;
+        unsigned int sizeOnDisk = st.st_blocks * 512;
         _printLine(size, sizeOnDisk, entry->d_name);
     }
 
     if (closedir(directory) == -1) {
+        perror("closedir");
         return -1;
     }
 
