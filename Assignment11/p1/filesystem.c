@@ -15,7 +15,6 @@
 #include <assert.h>
 #include <string.h>
 
-#define MAX_FILE_NAME 256
 
 FileSystem *initFileSystem(char *diskFile)
 {
@@ -116,7 +115,7 @@ int _findDirectoryEntry(OpenFileHandle *dir, char *name, DirectoryEntry *dirEntr
             return -1;
         }
 
-        if (strncmp(entry.name, name, MAX_FILE_NAME) == 0) {
+        if (strncmp(entry.name, name, FILE_NAME_LENGTH) == 0) {
             memcpy(dirEntry, &entry, sizeof(DirectoryEntry));
             return 0;
         }
@@ -152,7 +151,7 @@ OpenFileHandle *openFile(FileSystem *fs, char *dir, char *name)
         return NULL;
     }
 
-    if (entry.fileType != FTYPE_REGULAR) {
+    if (entry.type != FTYPE_REGULAR) {
         closeFile(root);
         return NULL;
     }
@@ -161,7 +160,7 @@ OpenFileHandle *openFile(FileSystem *fs, char *dir, char *name)
     // You can use readFile to read from the directory stream.
     // ----------------
 
-    OpenFileHandle *file = _openFileAtBlock(fs, entry.startBlock, entry.length);
+    OpenFileHandle *file = _openFileAtBlock(fs, entry.firstBlock, entry.length);
 
     if (file == NULL) {
         closeFile(root);
