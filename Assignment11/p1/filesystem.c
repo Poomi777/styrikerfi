@@ -211,6 +211,7 @@ static char _readFileByte(OpenFileHandle *handle)
     off_t offset = lseek(handle->fileSystem->fd, handle->currentBlock * BLOCK_SIZE, SEEK_SET);
     ssize_t bytesRead = read(handle->fileSystem->fd, &block, BLOCK_SIZE);
     assert(bytesRead == BLOCK_SIZE);
+    
     (void)offset;
     (void)bytesRead;
 
