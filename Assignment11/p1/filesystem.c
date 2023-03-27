@@ -134,8 +134,9 @@ OpenFileHandle *openFile(FileSystem *fs, char *dir, char *name)
     // Open the root directory file.
     OpenFileHandle *root = _openFileAtBlock(fs, ROOT_DIRECTORY_BLOCK,
                                             fs->header.rootDirectorySize);
+
     if (dir == NULL) {
-        dirHandle = _openFileAtBlock(fs, ROOT_DIRECTORY_BLOCK, fs->header.rootDirectorySize);
+        root = _openFileAtBlock(fs, ROOT_DIRECTORY_BLOCK, fs->header.rootDirectorySize);
     }
     else {
         DirectoryEntry dirEntry;
@@ -144,7 +145,7 @@ OpenFileHandle *openFile(FileSystem *fs, char *dir, char *name)
             return NULL;
         }
 
-        dirHandle = _openFileAtBlock(fs, dirEntry.firstBlock, dirEntry.length);
+        root = _openFileAtBlock(fs, dirEntry.firstBlock, dirEntry.length);
     }
 
     // ----------------
@@ -156,7 +157,7 @@ OpenFileHandle *openFile(FileSystem *fs, char *dir, char *name)
     int result = _findDirectoryEntry(root, name, &fileEntry);
 
     if (result != 0 || fileEntry.type != FTYPE_REGULAR) {
-        closeFile(dirHandle);
+        closeFile(root);
         return NULL;
     }
 
@@ -169,12 +170,12 @@ OpenFileHandle *openFile(FileSystem *fs, char *dir, char *name)
     OpenFileHandle *fileHandle = _openFileAtBlock(fs, fileEntry.firstBlock, fileEntry.length);
 
     if (fileHandle == NULL) {
-        closeFile(dirHandle);
+        closeFile(root);
 
         return NULL;
     }
 
-    closeFile(dirHandle);
+    closeFile(root);
 
     // ----------------
     // Return a file handle if the file could be found.
