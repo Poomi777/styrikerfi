@@ -207,7 +207,7 @@ static char _readFileByte(OpenFileHandle *handle)
     // must not be called if there are not more bytes to read.
     // ----------------
 
-    uint32_t blockSize = handle->fileSystem->header.blockSize;
+    uint32_t blockSize = handle->fileSystem->header.blockSizeBytes;
 
     uint32_t *fat = (uint32_t)((char *)handle->fileSystem + blockSize);
 
