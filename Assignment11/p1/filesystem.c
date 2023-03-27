@@ -209,7 +209,7 @@ static char _readFileByte(OpenFileHandle *handle)
 
     uint32_t blockSize = handle->fileSystem->header.rootDirectorySize;
 
-    uint32_t *fat = (uint32_t)((char *)handle->fileSystem + blockSize);
+    uint32_t *fat = (uint32_t *)((char *)handle->fileSystem + blockSize);
 
     uint32_t fatIndex = handle->currentBlock / (blockSize / sizeof(uint32_t));
 
