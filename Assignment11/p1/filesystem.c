@@ -198,43 +198,28 @@ void closeFile(OpenFileHandle *handle)
 static char _readFileByte(OpenFileHandle *handle)
 {
     assert(handle != NULL);
-    // assert(_hasMoreBytes(handle));
-    // assert(handle->fileSystem != NULL);
-    // assert(handle->currentBlock < FILE_SYSTEM_BLOCKS);
-
-    // ----------------
-    // Read a byte from the file. This should never fail, because the function
-    // must not be called if there are not more bytes to read.
-    // ----------------
+    assert(handle->currentBlock < FILE_SYSTEM_BLOCKS);
 
     FileSystem *fs = handle->fileSystem;
+    uint32_t blockOffset = handle->currentBlock * BLOCK_SIZE;
+    uint32_t fileOffset = blockOffset + handle->currentFileOffset;
 
-    if (!_hasMoreBytes(handle)) {
+    if (fileOffset >= handle->length) {
+        // end of file
         return EOF;
     }
 
-    uint32_t blockSize = fs->header.rootDirectorySize;
-    uint32_t blockOffset = handle->currentFileOffset % blockSize;
-    uint32_t blockNumber = handle->currentBlock;
+    uint8_t *blockData = (uint8_t *)fs->diskData + blockOffset;
 
-
-    if (blockOffset == 0) {
-        if (handle->currentFileOffset > 0) {
-            blockNumber = getNextBlockNumber(fs, blockNumber);
-
-            if (blockNumber == 0xFFFFFFFF) {
-                return EOF;
-            }
-        }
+    if (handle->currentFileOffset == BLOCK_SIZE) {
+        // current block has been fully read, move to the next block
+        handle->currentBlock = fs->fat[handle->currentBlock];
+        blockData = (uint8_t *)fs->diskData + handle->currentBlock * BLOCK_SIZE;
+        handle->currentFileOffset = 0;
     }
 
-    char byte = fs->header[blockNumber * blockSize + blockOffset];
-
-
+    char byte = blockData[handle->currentFileOffset];
     handle->currentFileOffset++;
-    if (blockOffset == blockSize - 1) {
-        handle->currentBlock = getNextBlockNumber(fs, blockNumber);
-    }
 
     return byte;
 
