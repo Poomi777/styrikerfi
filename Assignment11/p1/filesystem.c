@@ -97,7 +97,7 @@ static int _hasMoreBytes(OpenFileHandle *handle)
     // Check if there are more bytes to read in the file.
     // ----------------
 
-    return (handle->currentFileOffset < handle->length)
+    return (handle->currentFileOffset < handle->length);
 }
 
 int _findDirectoryEntry(OpenFileHandle *dir, char *name, DirectoryEntry *dirEntry)
