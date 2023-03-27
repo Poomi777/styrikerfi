@@ -15,6 +15,8 @@
 #include <assert.h>
 #include <string.h>
 
+#define MAX_FILE_NAME 256
+
 FileSystem *initFileSystem(char *diskFile)
 {
     if (diskFile == NULL) {
