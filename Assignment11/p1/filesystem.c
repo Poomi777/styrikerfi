@@ -208,16 +208,16 @@ static char _readFileByte(OpenFileHandle *handle)
     // ----------------
 
     FileSystemBlock block;
-    off_t offset = lseek(handle->fileSystem->fd, handle->currentBlock * BLOCK_SIZE, SEEK_SET);
-    ssize_t bytesRead = read(handle->fileSystem->fd, &block, BLOCK_SIZE);
-    assert(bytesRead == BLOCK_SIZE);
-    
-    (void)offset;
-    (void)bytesRead;
+    lseek(handle->fileSystem->fd, HEADER_SIZE + handle->currentBlock * BLOCK_SIZE, SEEK_SET);
+    read(handle->fileSystem->fd, &block, BLOCK_SIZE);
+
 
     char byte = block.data[handle->currentFileOffset % BLOCK_SIZE];
 
+
     handle->currentFileOffset++;
+
+
     if (handle->currentFileOffset % BLOCK_SIZE == 0) {
         handle->currentBlock = handle->fileSystem->header.fat[handle->currentBlock];
     }
