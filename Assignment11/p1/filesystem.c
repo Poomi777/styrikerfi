@@ -198,31 +198,30 @@ void closeFile(OpenFileHandle *handle)
 static char _readFileByte(OpenFileHandle *handle)
 {
     assert(handle != NULL);
+    assert(_hasMoreBytes(handle));
+    assert(handle->fileSystem != NULL);
     assert(handle->currentBlock < FILE_SYSTEM_BLOCKS);
 
-    FileSystem *fs = handle->fileSystem;
-    uint32_t blockOffset = handle->currentBlock * BLOCK_SIZE;
-    uint32_t fileOffset = blockOffset + handle->currentFileOffset;
+    // ----------------
+    // Read a byte from the file. This should never fail, because the function
+    // must not be called if there are not more bytes to read.
+    // ----------------
 
-    if (fileOffset >= handle->length) {
-        // end of file
-        return EOF;
-    }
+    FileSystemBlock block;
+    off_t offset = lseek(handle->fileSystem->fd, handle->currentBlock * BLOCK_SIZE, SEEK_SET);
+    ssize_t bytesRead = read(handle->fileSystem->fd, &block, BLOCK_SIZE);
+    assert(bytesRead == BLOCK_SIZE);
+    (void)offset;
+    (void)bytesRead;
 
-    uint8_t *blockData = (uint8_t *)fs->diskData + blockOffset;
+    char byte = block.data[handle->currentFileOffset % BLOCK_SIZE];
 
-    if (handle->currentFileOffset == BLOCK_SIZE) {
-        // current block has been fully read, move to the next block
-        handle->currentBlock = fs->fat[handle->currentBlock];
-        blockData = (uint8_t *)fs->diskData + handle->currentBlock * BLOCK_SIZE;
-        handle->currentFileOffset = 0;
-    }
-
-    char byte = blockData[handle->currentFileOffset];
     handle->currentFileOffset++;
+    if (handle->currentFileOffset % BLOCK_SIZE == 0) {
+        handle->currentBlock = handle->fileSystem->header.fat[handle->currentBlock];
+    }
 
     return byte;
-
 }
 
 // This acts like the default linux read() system call on your file.
@@ -241,6 +240,7 @@ int readFile(OpenFileHandle *handle, char *buffer, int length)
 
     return n;
 }
+
 
 
 
