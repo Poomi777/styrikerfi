@@ -97,14 +97,28 @@ static int _hasMoreBytes(OpenFileHandle *handle)
     // Check if there are more bytes to read in the file.
     // ----------------
 
-    return 0;
+    return (handle->currentFileOffset < handle->length)
 }
 
 int _findDirectoryEntry(OpenFileHandle *dir, char *name, DirectoryEntry *dirEntry)
 {
-    (void)dir;
-    (void)name;
-    (void)dirEntry;
+    if (dir == NULL || name == NULL || dirEntry == NULL) {
+        return -1;
+    }
+
+    DirectoryEntry entry;
+    while (_hasMoreBytes(dir)) {
+        int bytesRead = readFile(dir, (char *)&entry, sizeof(DirectoryEntry));
+
+        if (bytesRead != sizeof(DirectoryEntry)) {
+            return -1;
+        }
+
+        if (strncmp(entry.name, name, MAX_FILE_NAME) == 0) {
+            memcpy(dirEntry, &entry, sizeof(DirectoryEntry));
+            return 0;
+        }
+    }
 
     return -1;
 }
@@ -128,19 +142,37 @@ OpenFileHandle *openFile(FileSystem *fs, char *dir, char *name)
     // find the directory (in the root directory) with that name
     // open that directory, and use that instead of root for searching the file name
     // ----------------
-    (void)dir;
+    DirectoryEntry entry;
+    int result = _findDirectoryEntry(root, name, &entry);
 
+    if (result != 0) {
+        closeFile(root);
+        return NULL;
+    }
+
+    if (entry.fileType != FTYPE_REGULAR) {
+        closeFile(root);
+        return NULL;
+    }
     // ----------------
     // Find the directory entry with that name.
     // You can use readFile to read from the directory stream.
     // ----------------
+
+    OpenFileHandle *file = _openFileAtBlock(fs, entry.startBlock, entry.length);
+
+    if (file == NULL) {
+        closeFile(root);
+
+        return NULL;
+    }
 
     closeFile(root);
 
     // ----------------
     // Return a file handle if the file could be found.
     // ----------------
-    return NULL;
+    return file;
 }
 
 void closeFile(OpenFileHandle *handle)
@@ -167,7 +199,27 @@ static char _readFileByte(OpenFileHandle *handle)
     // must not be called if there are not more bytes to read.
     // ----------------
 
-    return 0;
+    uint32_t blockSize = handle->fileSystem->header.blockSize;
+
+    uint32_t *fat = (uint32_t)((char *)handle->fileSystem + blockSize);
+
+    uint32_t fatIndex = handle->currentBlock / (blockSize / sizeof(uint32_t));
+
+    if (handle->currentFileOffset % blockSize == 0) {
+        uint32_t nextBlock = fat[fatIndex];
+        if (nextBlock == FAT_EOC) {
+            return 0;
+        }
+
+        handle->currentBlock = nextBlock;
+    }
+
+    char *block = (char *)handle->fileSystem + handle->currentBlock * blockSize;
+    char byte = block[handle->currentFileOffset % blockSize];
+
+
+    handle->currentFileOffset++;
+    return byte;
 }
 
 // This acts like the default linux read() system call on your file.
