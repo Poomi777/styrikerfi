@@ -213,7 +213,7 @@ static char _readFileByte(OpenFileHandle *handle)
         return EOF;
     }
 
-    uint32_t blockSize = fs->header.blockSize;
+    uint32_t blockSize = fs->header.rootDirectorySize;
     uint32_t blockOffset = handle->currentFileOffset % blockSize;
     uint32_t blockNumber = handle->currentBlock;
 
@@ -228,11 +228,11 @@ static char _readFileByte(OpenFileHandle *handle)
         }
     }
 
-    char byte = fs->disk[blockNumber * blockSize + blockOffset];
+    char byte = fs->fd[blockNumber * blockSize + blockOffset];
 
 
     handle->currentFileOffset++;
-    if (blockOffset == blocksize - 1) {
+    if (blockOffset == blockSize - 1) {
         handle->currentBlock = getNextBlockNumber(fs, blockNumber);
     }
 
