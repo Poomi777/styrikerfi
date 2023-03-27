@@ -198,36 +198,46 @@ void closeFile(OpenFileHandle *handle)
 static char _readFileByte(OpenFileHandle *handle)
 {
     assert(handle != NULL);
-    assert(_hasMoreBytes(handle));
-    assert(handle->fileSystem != NULL);
-    assert(handle->currentBlock < FILE_SYSTEM_BLOCKS);
+    // assert(_hasMoreBytes(handle));
+    // assert(handle->fileSystem != NULL);
+    // assert(handle->currentBlock < FILE_SYSTEM_BLOCKS);
 
     // ----------------
     // Read a byte from the file. This should never fail, because the function
     // must not be called if there are not more bytes to read.
     // ----------------
 
-    uint32_t blockSize = handle->fileSystem->header.rootDirectorySize;
+    FileSystem *fs = handle->fileSystem;
 
-    uint32_t *fat = (uint32_t *)((char *)handle->fileSystem + blockSize);
-
-    uint32_t fatIndex = handle->currentBlock / (blockSize / sizeof(uint32_t));
-
-    if (handle->currentFileOffset % blockSize == 0) {
-        uint32_t nextBlock = fat[fatIndex];
-        if (nextBlock == FAT_EOC) {
-            return 0;
-        }
-
-        handle->currentBlock = nextBlock;
+    if (!_hasMoreBytes(handle)) {
+        return EOF;
     }
 
-    char *block = (char *)handle->fileSystem + handle->currentBlock * blockSize;
-    char byte = block[handle->currentFileOffset % blockSize];
+    uint32_t blockSize = fs->header.blockSize;
+    uint32_t blockOffset = handle->currentFileOffset % blockSize;
+    uint32_t blockNumber = handle->currentBlock;
+
+
+    if (blockOffset == 0) {
+        if (handle->currentFileOffset > 0) {
+            blockNumber = getNextBlockNumber(fs, blockNumber);
+
+            if (blockNumber == 0xFFFFFFFF) {
+                return EOF;
+            }
+        }
+    }
+
+    char byte = fs->disk[blockNumber * blockSize + blockOffset];
 
 
     handle->currentFileOffset++;
+    if (blockOffset == blocksize - 1) {
+        handle->currentBlock = getNextBlockNumber(fs, blockNumber);
+    }
+
     return byte;
+
 }
 
 // This acts like the default linux read() system call on your file.
