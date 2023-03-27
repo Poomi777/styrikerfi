@@ -134,8 +134,17 @@ OpenFileHandle *openFile(FileSystem *fs, char *dir, char *name)
     // Open the root directory file.
     OpenFileHandle *root = _openFileAtBlock(fs, ROOT_DIRECTORY_BLOCK,
                                             fs->header.rootDirectorySize);
-    if (root == NULL) {
-        return NULL;
+    if (dir == NULL) {
+        dirHandle = _openFileAtBlock(fs, ROOT_DIRECTORY_BLOCK, fs->header.rootDirectorySize);
+    }
+    else {
+        DirectoryEntry dirEntry;
+        int result = _findDirectoryEntry(_openFileAtBlock(fs, ROOT_DIRECTORY_BLOCK, fs->header.rootDirectorySize), dir, &dirEntry);
+        if (result != 0 || dirEntry.type != FTYPE_DIRECTORY) {
+            return NULL;
+        }
+
+        dirHandle = _openFileAtBlock(fs, dirEntry.firstBlock, dirEntry.length);
     }
 
     // ----------------
@@ -143,37 +152,34 @@ OpenFileHandle *openFile(FileSystem *fs, char *dir, char *name)
     // find the directory (in the root directory) with that name
     // open that directory, and use that instead of root for searching the file name
     // ----------------
-    DirectoryEntry entry;
-    int result = _findDirectoryEntry(root, name, &entry);
+    DirectoryEntry fileEntry;
+    int result = _findDirectoryEntry(root, name, &fileEntry);
 
-    if (result != 0) {
-        closeFile(root);
+    if (result != 0 || fileEntry.type != FTYPE_REGULAR) {
+        closeFile(dirHandle);
         return NULL;
     }
 
-    if (entry.type != FTYPE_REGULAR) {
-        closeFile(root);
-        return NULL;
-    }
+
     // ----------------
     // Find the directory entry with that name.
     // You can use readFile to read from the directory stream.
     // ----------------
 
-    OpenFileHandle *file = _openFileAtBlock(fs, entry.firstBlock, entry.length);
+    OpenFileHandle *fileHandle = _openFileAtBlock(fs, fileEntry.firstBlock, fileEntry.length);
 
-    if (file == NULL) {
-        closeFile(root);
+    if (fileHandle == NULL) {
+        closeFile(dirHandle);
 
         return NULL;
     }
 
-    closeFile(root);
+    closeFile(dirHandle);
 
     // ----------------
     // Return a file handle if the file could be found.
     // ----------------
-    return file;
+    return fileHandle;
 }
 
 void closeFile(OpenFileHandle *handle)
