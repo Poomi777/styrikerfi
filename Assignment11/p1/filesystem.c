@@ -53,7 +53,7 @@ FileSystem *initFileSystem(char *diskFile)
     FileSystem *fs = malloc(sizeof(FileSystem));
     if (fs == NULL) {
         munmap(mapped, fileSize);
-        close(filedesc)
+        close(filedesc);
         return NULL;
     }
 
