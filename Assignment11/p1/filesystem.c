@@ -228,7 +228,7 @@ static char _readFileByte(OpenFileHandle *handle)
         }
     }
 
-    char byte = fs->fd[blockNumber * blockSize + blockOffset];
+    char byte = fs->header[blockNumber * blockSize + blockOffset];
 
 
     handle->currentFileOffset++;
