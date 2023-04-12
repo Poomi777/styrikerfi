@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 
 using namespace std;
@@ -86,7 +87,7 @@ void print_order(Order* orders, int num_of_orders) {
             for (int j = 0; j < orders[i].num_of_cars; j++) {
                 cout << "   Manufacturer: " << orders[i].cars[j].manufacturer << endl;
                 cout << "   Series: " << orders[i].cars[j].series << endl;
-                cout << "   Engine size: " << orders[i].cars[j].engine << endl;
+                cout << "   Engine size: " << orders[i].cars[j].engine << endl << endl;
             }
             break;
             
@@ -116,7 +117,7 @@ void search_order(Order* orders, int num_of_orders) {
             for (int j = 0; j < orders[i].num_of_cars; j++) {
                 cout << "   Manufacturer: " << orders[i].cars[j].manufacturer << endl;
                 cout << "   Series: " << orders[i].cars[j].series << endl;
-                cout << "   Engine size: " << orders[i].cars[j].engine << endl;
+                cout << "   Engine size: " << orders[i].cars[j].engine << endl << endl;
             }
         }
     }
@@ -127,20 +128,40 @@ void search_order(Order* orders, int num_of_orders) {
 }
 
 void save_orders(Order* orders, int num_of_order) {
-    ofstream file("orders.bin", ios::binary);
-    file.write(reinterpret_cast<char*>(orders), num_of_order * sizeof(Order));
+    ofstream file("orders.txt");
+    for (int i = 0; i < num_of_order; i++) {
+        file << orders[i].id << " " << orders[i].name << " " << orders[i].phone << " ";
+
+        for (int j = 0; j < orders[i].num_of_cars; j++) {
+            file << orders[i].cars[j].manufacturer << " " << orders[i].cars[j].series << " " << orders[i].cars[j].engine << " ";
+        }
+
+        file << endl;
+
+    }
+
     file.close();
 }
 
 void load_orders(Order* orders, int& num_of_orders) {
-    ifstream file("orders.bin", ios::binary);
+    ifstream file("orders.txt");
     if (file) {
-        file.seekg(0, file.end);
-        int length = file.tellg();
-        file.seekg(0, file.beg);
-        int num_of_items = length / sizeof(Order);
-        file.read(reinterpret_cast<char*>(orders), length);
-        num_of_orders = num_of_items;
+        string line;
+        while (getline(file, line)) {
+            stringstream ss(line);
+            Order new_order;
+            ss >> new_order.id >> new_order.name >> new_order.phone;
+            while (ss) {
+                Car new_car;
+                ss >> new_car.manufacturer >> new_car.series >> new_car.engine;
+                if (ss) {
+                    new_order.cars[new_order.num_of_cars] = new_car;
+                    new_order.num_of_cars++;
+                }
+            }
+            orders[num_of_orders] = new_order;
+            num_of_orders++;
+        }
         cout << "Loaded " << num_of_orders << " orders from file" << endl;
     } else {
         cout << "No saved data detected to load from" << endl;
@@ -187,7 +208,7 @@ int main(){
             case 5:
                 quit = true;
                 save_orders(orders, num_of_orders);
-                cout << "Saved " << num_of_orders << "orders to file" << endl;
+                cout << "Saved " << num_of_orders << " orders to file" << endl;
                 break;
 
             default:
