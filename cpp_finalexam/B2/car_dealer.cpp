@@ -15,27 +15,27 @@ Car::Car(const Car& car) :
 
 Car::~Car() {}
 
-string Car::get_Manufacturer() const {
+string Car::get_manufacturer() const {
     return manufacturer;
 }
 
-string Car::get_Series() const {
+string Car::get_series() const {
     return series;
 }
 
-double Car::get_Engine() const {
+double Car::get_engine() const {
     return engine;
 }
 
-void Car::set_Manufacturer(string manufact) {
+void Car::set_manufacturer(string manufact) {
     manufacturer = manufact;
 }
 
-void Car::set_Series(string seri) {
+void Car::set_series(string seri) {
     series = seri;
 }
 
-void Car::set_Engine(double engi) {
+void Car::set_engine(double engi) {
     engine = engi;
 }
 
@@ -56,15 +56,15 @@ Order::Order(const Order& order) :
 
 Order::~Order() {}
 
-string Order::get_Buyer() const {
+string Order::get_buyer() const {
     return buyer;
 }
 
-Car Order:: get_Car() const {
+Car Order:: get_car() const {
     return car;
 }
 
-double Order:: get_Price() const {
+double Order:: get_price() const {
     return price;
 }
 
@@ -72,19 +72,19 @@ bool Order::isReceived() const {
     return received;
 }
 
-void Order:: set_Buyer(string buy) {
+void Order:: set_buyer(string buy) {
     buyer = buy;
 }
 
-void:: Order::set_Car(const Car& carObject) {
+void:: Order::set_car(const Car& carObject) {
     car = carObject;
 }
 
-void Order::set_Price(double pri) {
+void Order::set_price(double pri) {
     price = pri;
 }
 
-void Order::set_Received(bool rec) {
+void Order::set_received(bool rec) {
     received = rec;
 }
 
