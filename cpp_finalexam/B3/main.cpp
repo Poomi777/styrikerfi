@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <vector>
 #include "../B2/car_dealer.h"
 
@@ -7,27 +8,32 @@ using namespace std;
 
 // Implement read_results_from_file(std::string filename) here
 
-vector<Order> read_results_from_file(string filename) {
-    ifstream input_file(filename);
+vector<Order> read_results_from_file(const string& filename) {
+    ifstream file(filename);
     vector<Order> results;
 
-    if (input_file.is_open()) {
-        string buyer, manufacturer, series;
-        string engine_str, price_str, received_str;
-        double engine, price;
-        bool received;
-
-        while (input_file >> buyer >> manufacturer >> series >> engine_str >> price_str >> received_str) {
-            engine =  stod(engine_str);
-            price = stod(price_str);
-            received = (received_str == "1");
-            Car car(manufacturer, series, engine);
-            results.emplace_back(buyer, car, price, received);
-        }
-
-        input_file.close();
+    if (!file.is_open()) {
+        cerr << "File could not be opend: " << filename << endl;
+        return results;
     }
 
+    string line;
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string buyer, manufacturer, series;
+        double engine, price;
+        int received_int;
+        bool received;
+
+        ss >> buyer >> manufacturer >> series >> engine >> price >> received_int;
+        received = received_int == 1;
+
+        Car car(manufacturer, series, engine);
+        Order order(buyer, car, price, received);
+        results.push_back(order);
+    }
+
+    file.close();
     return results;
 }
 
