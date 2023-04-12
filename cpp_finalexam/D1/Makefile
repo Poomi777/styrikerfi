@@ -1,0 +1,7 @@
+
+
+all:
+	g++ -o d1 -std=c++11 *.cpp -pthread
+
+skel:
+	scp ./*.cpp ./*.h skel.ru.is:~/cpp_finalexam_23/D1/
