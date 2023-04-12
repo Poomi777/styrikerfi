@@ -19,13 +19,13 @@ class Car{
         Car(const Car& car);
         ~Car();
 
-        string getManufacturer() const;
-        string getSeries() const;
-        double getEngine() const;
+        string get_Manufacturer() const;
+        string get_Series() const;
+        double get_Engine() const;
 
-        void setManufacturer(string manufact);
-        void setSeries(string seri);
-        void setEngine(double engi);
+        void set_Manufacturer(string manufact);
+        void set_Series(string seri);
+        void set_Engine(double engi);
 
         friend ostream& operator<<(ostream& os, const Car& car);
 };
@@ -43,15 +43,15 @@ class Order {
     Order(const Order& order);
     ~Order();
 
-    string getBuyer() const;
-    Car getCar() const;
-    double getPrice() const;
+    string get_Buyer() const;
+    Car get_Car() const;
+    double get_Price() const;
     bool isReceived() const;
 
-    void setBuyer(string buy);
-    void setCar(const Car& carObject);
-    void setPrice(double pri);
-    void setReceived(bool receive);
+    void set_Buyer(string buy);
+    void set_Car(const Car& carObject);
+    void set_Price(double pri);
+    void set_Received(bool receive);
 
     friend ostream& operator<<(ostream& os, const Order& order);
 };
