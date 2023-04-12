@@ -46,7 +46,7 @@ class Order {
     string get_buyer() const;
     Car get_car() const;
     double get_price() const;
-    bool isReceived() const;
+    bool get_received() const;
 
     void set_buyer(string buy);
     void set_car(const Car& carObject);
