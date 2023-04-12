@@ -68,7 +68,7 @@ double Order:: get_price() const {
     return price;
 }
 
-bool Order::isReceived() const {
+bool Order::get_received() const {
     return received;
 }
 
