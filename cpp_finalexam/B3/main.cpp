@@ -9,24 +9,26 @@ using namespace std;
 
 vector<Order> read_results_from_file(string filename) {
     ifstream input_file(filename);
-    vector<Order> orders;
+    vector<Order> results;
 
     if (input_file.is_open()) {
         string buyer, manufacturer, series;
-        string engine, price_str, received_str;
-        double price;
+        string engine_str, price_str, received_str;
+        double engine, price;
         bool received;
 
-        while (input_file >> buyer >> manufacturer >> series >> engine >> price_str >> received_str) {
+        while (input_file >> buyer >> manufacturer >> series >> engine_str >> price_str >> received_str) {
+            engine =  stod(engine_str);
             price = stod(price_str);
             received = (received_str == "1");
-            orders.emplace_back(buyer, manufacturer, series, engine, price, received);
+            Car car(manufacturer, series, engine);
+            results.emplace_back(buyer, car, price, received);
         }
 
         input_file.close();
     }
 
-    return orders;
+    return results;
 }
 
 
@@ -37,4 +39,3 @@ int main(){
     }
     return 0;
 }
-
